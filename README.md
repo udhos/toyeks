@@ -37,7 +37,7 @@ export AWS_PROFILE=...
 Update ~/.kube/config with the new cluster.
 
 ```
-$ aws eks update-kubeconfig --name eks_toyeks --profile $AWS_PROFILE --region us-east-2
+$ aws eks update-kubeconfig --name eks_toyeks_cluster1 --profile $AWS_PROFILE --region us-east-2
 ```
 
 List cluster namespaces.
