@@ -29,6 +29,13 @@ case $arg in
     destroy)
         terraform -chdir=./terraform destroy
         ;;
+    refresh)
+        terraform -chdir=./terraform apply -refresh-only
+        ;;
+    import)
+        echo import resource_type.resource_name resource_address:
+        echo terraform -chdir=./terraform import aws_eks_cluster.eks_toyeks eks_toyeks
+        ;;
     *)
         echo bad option: [$arg]
         ;;
