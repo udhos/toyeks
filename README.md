@@ -23,6 +23,8 @@ Client Version: version.Info{Major:"1", Minor:"19", GitVersion:"v1.19.0", GitCom
 ```
 git clone https://github.com/udhos/toyeks
 
+cd toyeks
+
 export AWS_PROFILE=...
 
 ./run.sh boot
