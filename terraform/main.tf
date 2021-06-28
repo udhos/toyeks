@@ -1,6 +1,6 @@
 
 variable "eks_cluster_name" {
-  default = "eks_toyeks"
+  default = "eks_toyeks_cluster1"
 }
 
 variable "region" {
@@ -29,7 +29,7 @@ resource "aws_vpc" "vpc_toyeks" {
   enable_dns_support   = true
 
   tags = {
-    Name = "vpc_toyeks"
+    Name = "vpc_${var.eks_cluster_name}"
   }
 }
 
@@ -37,19 +37,19 @@ resource "aws_internet_gateway" "inet_gw_toyeks" {
   vpc_id = aws_vpc.vpc_toyeks.id
 
   tags = {
-    Name = "inet_gw_toyeks"
+    Name = "inet_gw_${var.eks_cluster_name}"
   }
 }
 
 resource "aws_eip" "eip_toyeks_a" {
   tags = {
-    Name = "eip_toyeks_a"
+    Name = "eip_${var.eks_cluster_name}_a"
   }
 }
 
 resource "aws_eip" "eip_toyeks_b" {
   tags = {
-    Name = "eip_toyeks_b"
+    Name = "eip_${var.eks_cluster_name}_b"
   }
 }
 
@@ -58,7 +58,7 @@ resource "aws_nat_gateway" "toyeks_nat_gw_a" {
   allocation_id = aws_eip.eip_toyeks_a.id
 
   tags = {
-    Name = "toyeks_nat_gw_a"
+    Name = "toyeks_nat_gw_${var.eks_cluster_name}_a"
   }
 
   # To ensure proper ordering, it is recommended to add an explicit dependency
@@ -71,7 +71,7 @@ resource "aws_nat_gateway" "toyeks_nat_gw_b" {
   allocation_id = aws_eip.eip_toyeks_b.id
 
   tags = {
-    Name = "toyeks_nat_gw_b"
+    Name = "toyeks_nat_gw_${var.eks_cluster_name}_b"
   }
 
   # To ensure proper ordering, it is recommended to add an explicit dependency
@@ -88,7 +88,7 @@ resource "aws_route_table" "route_table_toyeks_a" {
   }
 
   tags = {
-    Name = "route_table_toyeks_a"
+    Name = "route_table_${var.eks_cluster_name}_a"
   }
 }
 
@@ -101,7 +101,7 @@ resource "aws_route_table" "route_table_toyeks_b" {
   }
 
   tags = {
-    Name = "route_table_toyeks_b"
+    Name = "route_table_${var.eks_cluster_name}_b"
   }
 }
 
@@ -111,7 +111,7 @@ resource "aws_subnet" "subnet_toyeks_a" {
   availability_zone = "${var.region}a"
 
   tags = {
-    Name = "subnet_toyeks_a"
+    Name = "subnet_${var.eks_cluster_name}_a"
   }
 }
 
@@ -121,7 +121,7 @@ resource "aws_subnet" "subnet_toyeks_b" {
   availability_zone = "${var.region}b"
 
   tags = {
-    Name = "subnet_toyeks_b"
+    Name = "subnet_${var.eks_cluster_name}_b"
   }
 }
 
@@ -136,12 +136,12 @@ resource "aws_route_table_association" "b" {
 }
 
 resource "aws_security_group" "toyeks_nodes" {
-  name        = "toyeks_nodes"
-  description = "toyeks nodes"
+  name        = "${var.eks_cluster_name}_toyeks_nodes"
+  description = "${var.eks_cluster_name} toyeks nodes"
   vpc_id      = aws_vpc.vpc_toyeks.id
 
   tags = {
-    Name = "toyeks_nodes"
+    Name = "${var.eks_cluster_name}_toyeks_nodes"
   }
 }
 
@@ -166,7 +166,7 @@ resource "aws_security_group_rule" "toyeks_nodes_out" {
 }
 
 resource "aws_iam_role" "eks_toyeks_cluster_role" {
-  name = "eks_toyeks_cluster_role"
+  name = "${var.eks_cluster_name}_cluster_role"
 
   assume_role_policy = <<POLICY
 {
@@ -236,7 +236,7 @@ resource "aws_eks_cluster" "eks_toyeks" {
 }
 
 resource "aws_iam_policy" "toyeks_node_role_autoscaling" {
-  name        = "toyeks_node_role_autoscaling"
+  name        = "${var.eks_cluster_name}_node_role_autoscaling"
   path        = "/"
   description = "Allow nodes to call autoscaling APIs."
 
@@ -263,7 +263,7 @@ POLICY
 }
 
 resource "aws_iam_role" "toyeks_node_role" {
-  name = "toyeks_node_role"
+  name = "${var.eks_cluster_name}_node_role"
 
   assume_role_policy = <<POLICY
 {
