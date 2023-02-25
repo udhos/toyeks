@@ -28,11 +28,11 @@ variable "nodegroup_b_capacity_type" {
 }
 
 variable "nodegroup_a_instance_types" {
-  type = list
+  type = list(any)
 }
 
 variable "nodegroup_b_instance_types" {
-  type = list
+  type = list(any)
 }
 
 resource "aws_vpc" "vpc_toyeks" {
@@ -52,7 +52,7 @@ resource "aws_security_group" "toyeks_nodes" {
   vpc_id      = aws_vpc.vpc_toyeks.id
 
   tags = {
-    Name = "${var.eks_cluster_name}_toyeks_nodes"
+    Name                     = "${var.eks_cluster_name}_toyeks_nodes"
     "karpenter.sh/discovery" = var.eks_cluster_name
   }
 }
@@ -224,8 +224,8 @@ resource "aws_eks_node_group" "toyeks_node_group_a" {
   node_role_arn   = aws_iam_role.toyeks_node_role.arn
   subnet_ids      = [aws_subnet.subnet_priv_toyeks_a.id]
 
-  version = var.nodegroup_a_version
-  capacity_type = var.nodegroup_a_capacity_type
+  version        = var.nodegroup_a_version
+  capacity_type  = var.nodegroup_a_capacity_type
   instance_types = var.nodegroup_a_instance_types
 
   scaling_config {
@@ -255,8 +255,8 @@ resource "aws_eks_node_group" "toyeks_node_group_b" {
   node_role_arn   = aws_iam_role.toyeks_node_role.arn
   subnet_ids      = [aws_subnet.subnet_priv_toyeks_b.id]
 
-  version = var.nodegroup_b_version
-  capacity_type = var.nodegroup_b_capacity_type
+  version        = var.nodegroup_b_version
+  capacity_type  = var.nodegroup_b_capacity_type
   instance_types = var.nodegroup_b_instance_types
 
   scaling_config {

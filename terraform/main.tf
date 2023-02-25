@@ -31,21 +31,6 @@ variable "nodegroup_b_instance_types" {
   default = ["t3.medium"]
 }
 
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 4.56"
-    }
-  }
-}
-
-provider "aws" {
-  region = var.region
-  //shared_credentials_file = "~/.aws/creds"
-  //profile                 = "profilename"
-}
-
 module "eks_toyeks_cluster1" {
   source                     = "./module_eks"
   eks_cluster_name           = "eks_toyeks_cluster1"

@@ -2,23 +2,33 @@
 
 arg="$1"
 
+tf_fmt() {
+    terraform -chdir=./terraform fmt -recursive
+}
+tf_validate() {
+    terraform -chdir=./terraform validate
+}
+tf_init() {
+    terraform -chdir=./terraform init
+}
+
 case $arg in
     validate)
-        terraform -chdir=./terraform validate
+        tf_validate
         ;;
     fmt)
-        terraform -chdir=./terraform fmt
+        tf_fmt
         ;;
     init)
-        terraform -chdir=./terraform init
+        tf_init
         ;;
     upgrade)
         terraform -chdir=./terraform init --upgrade
         ;;
     boot)
-        terraform -chdir=./terraform fmt
-        terraform -chdir=./terraform validate
-        terraform -chdir=./terraform init
+        tf_fmt
+        tf_validate
+        tf_init
         ;;
     plan)
         terraform -chdir=./terraform plan -out=./plan

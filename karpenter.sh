@@ -149,8 +149,8 @@ spec:
   # Limits prevent Karpenter from creating new instances once the limit is exceeded.
   limits:
     resources:
-      cpu: "100"
-      memory: 100Gi
+      cpu: "1000"
+      memory: 1000Gi
 
   # Enables consolidation which attempts to reduce cluster cost by both removing un-needed nodes and down-sizing those
   # that can't be removed.  Mutually exclusive with the ttlSecondsAfterEmpty parameter.

@@ -61,6 +61,22 @@ kube-system       Active   16m
 ./karpenter.sh
 ```
 
+## Launch many pods and check karpenter autoscaling
+
+```
+helm repo add miniapi https://udhos.github.io/miniapi
+helm repo update
+helm search repo miniapi -l --version ">=0.0.0"
+helm install my-miniapi miniapi/miniapi --values miniapi/values.yaml
+
+kubectl scale deploy my-miniapi --replicas=200
+
+kubectl get deploy my-miniapi
+kubectl get nodes
+
+kubectl scale deploy my-miniapi --replicas=1
+```
+
 ## Destroy the cluster
 
 Do not forget to destroy everything.
