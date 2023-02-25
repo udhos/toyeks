@@ -7,6 +7,34 @@ variable "region" {
   type = string
 }
 
+variable "cluster_version" {
+  type = string
+}
+
+variable "nodegroup_a_version" {
+  type = string
+}
+
+variable "nodegroup_b_version" {
+  type = string
+}
+
+variable "nodegroup_a_capacity_type" {
+  type = string
+}
+
+variable "nodegroup_b_capacity_type" {
+  type = string
+}
+
+variable "nodegroup_a_instance_types" {
+  type = list
+}
+
+variable "nodegroup_b_instance_types" {
+  type = list
+}
+
 resource "aws_vpc" "vpc_toyeks" {
   cidr_block           = "10.0.0.0/16"
   instance_tenancy     = "default"
@@ -25,6 +53,7 @@ resource "aws_security_group" "toyeks_nodes" {
 
   tags = {
     Name = "${var.eks_cluster_name}_toyeks_nodes"
+    "karpenter.sh/discovery" = var.eks_cluster_name
   }
 }
 
@@ -80,7 +109,7 @@ resource "aws_cloudwatch_log_group" "toyeks_logs" {
 resource "aws_eks_cluster" "eks_toyeks" {
   name     = var.eks_cluster_name
   role_arn = aws_iam_role.eks_toyeks_cluster_role.arn
-  version  = "1.20"
+  version  = var.cluster_version
 
   vpc_config {
     security_group_ids      = [aws_security_group.toyeks_nodes.id]
@@ -195,6 +224,10 @@ resource "aws_eks_node_group" "toyeks_node_group_a" {
   node_role_arn   = aws_iam_role.toyeks_node_role.arn
   subnet_ids      = [aws_subnet.subnet_priv_toyeks_a.id]
 
+  version = var.nodegroup_a_version
+  capacity_type = var.nodegroup_a_capacity_type
+  instance_types = var.nodegroup_a_instance_types
+
   scaling_config {
     desired_size = 1
     max_size     = 3
@@ -221,6 +254,10 @@ resource "aws_eks_node_group" "toyeks_node_group_b" {
   node_group_name = "toyeks_node_group_b"
   node_role_arn   = aws_iam_role.toyeks_node_role.arn
   subnet_ids      = [aws_subnet.subnet_priv_toyeks_b.id]
+
+  version = var.nodegroup_b_version
+  capacity_type = var.nodegroup_b_capacity_type
+  instance_types = var.nodegroup_b_instance_types
 
   scaling_config {
     desired_size = 1

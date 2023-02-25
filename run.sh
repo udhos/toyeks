@@ -12,6 +12,9 @@ case $arg in
     init)
         terraform -chdir=./terraform init
         ;;
+    upgrade)
+        terraform -chdir=./terraform init --upgrade
+        ;;
     boot)
         terraform -chdir=./terraform fmt
         terraform -chdir=./terraform validate

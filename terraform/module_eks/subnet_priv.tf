@@ -70,6 +70,7 @@ resource "aws_subnet" "subnet_priv_toyeks_a" {
 
   tags = {
     Name = "subnet_priv_${var.eks_cluster_name}_a"
+    "karpenter.sh/discovery" = var.eks_cluster_name
   }
 }
 
@@ -80,6 +81,7 @@ resource "aws_subnet" "subnet_priv_toyeks_b" {
 
   tags = {
     Name = "subnet_priv_${var.eks_cluster_name}_b"
+    "karpenter.sh/discovery" = var.eks_cluster_name
   }
 }
 

@@ -8,14 +8,18 @@ Tested with:
 
 ```
 $ terraform version
-Terraform v1.0.1
+Terraform v1.3.9
 on linux_amd64
 
 $ aws --version
-aws-cli/2.2.14 Python/3.8.8 Linux/3.10.0-1127.19.1.el7.x86_64 exe/x86_64.centos.7 prompt/off
+aws-cli/2.10.3 Python/3.9.11 Linux/5.4.0-139-generic exe/x86_64.ubuntu.20 prompt/off
 
-$ kubectl version
-Client Version: version.Info{Major:"1", Minor:"19", GitVersion:"v1.19.0", GitCommit:"e19964183377d0ec2052d1f1fa930c4d7575bd50", GitTreeState:"clean", BuildDate:"2020-08-26T14:30:33Z", GoVersion:"go1.15", Compiler:"gc", Platform:"linux/amd64"}
+$ kubectl version --short
+Flag --short has been deprecated, and will be removed in the future. The --short output will become the default.
+Client Version: v1.25.6
+
+$ helm version
+version.BuildInfo{Version:"v3.11.1", GitCommit:"293b50c65d4d56187cd4e2f390f0ada46b4c4737", GitTreeState:"clean", GoVersion:"go1.18.10"}
 ```
 
 ## Create the cluster
@@ -37,7 +41,7 @@ export AWS_PROFILE=...
 Update ~/.kube/config with the new cluster.
 
 ```
-$ aws eks update-kubeconfig --name eks_toyeks_cluster1 --profile $AWS_PROFILE --region us-east-2
+$ aws eks update-kubeconfig --name eks_toyeks_cluster1 --region us-east-2
 ```
 
 List cluster namespaces.
@@ -49,6 +53,12 @@ default           Active   16m
 kube-node-lease   Active   16m
 kube-public       Active   16m
 kube-system       Active   16m
+```
+
+## Deploy karpenter
+
+```
+./karpenter.sh
 ```
 
 ## Destroy the cluster
