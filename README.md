@@ -57,6 +57,20 @@ kube-system       Active   16m
 
 ## Deploy karpenter
 
+Karpenter OCI registry: https://gallery.ecr.aws/karpenter/karpenter
+
+Query configuration values available for helm chart hosted on OCI registro:
+
+```
+export HELM_EXPERIMENTAL_OCI=1 ;# no longer required since helm 3.8.0
+
+helm show values oci://public.ecr.aws/karpenter/karpenter --version v0.25.0
+```
+
+You can add chart values to script karpenter.sh.
+
+Deploy script:
+
 ```
 ./karpenter.sh
 ```
