@@ -59,7 +59,7 @@ kube-system       Active   16m
 
 Karpenter OCI registry: https://gallery.ecr.aws/karpenter/karpenter
 
-Query configuration values available for helm chart hosted on OCI registro:
+Query configuration values available for helm chart hosted on OCI registry:
 
 ```
 export HELM_EXPERIMENTAL_OCI=1 ;# no longer required since helm 3.8.0
